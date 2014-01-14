@@ -1,0 +1,13 @@
+#!/bin/bash
+
+trap 'kill -9 $pid' EXIT
+rm log
+touch log
+if [ $# -ge 1 ]
+then
+    java -Djavax.net.ssl.trustStore=mySrvKeystore -Djavax.net.ssl.trustStorePassword=123456 Client "$@" &
+else
+    java -Djavax.net.ssl.trustStore=mySrvKeystore -Djavax.net.ssl.trustStorePassword=123456 Client &
+fi
+pid=$!
+tail -f log

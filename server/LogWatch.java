@@ -17,7 +17,7 @@ public class LogWatch extends TailerListenerAdapter
         listenerList = new ArrayList<Listener>();
         try
         {
-            logFile = new File("nginx");
+            logFile = new File(Server.logName);
             Tailer tailer = Tailer.create(logFile,this);
         }
         catch(Exception e)
@@ -32,11 +32,31 @@ public class LogWatch extends TailerListenerAdapter
         String str = null;
         try
         {
+            BufferedReader pattern = new BufferedReader(
+                    new InputStreamReader( sock.getInputStream()));
+            
+            ArrayList<String> params = new ArrayList<String>();
+            String param = null;
+            while(!((param = pattern.readLine()).equals("#@$")))
+            {
+               params.add(param);
+            }
+            if(params.size() > 0)
+            {
+               String[] tempArray = new String[params.size()];
+               listenerList.get(listenerList.size() - 1).setPattern(params.toArray(tempArray));
+            }
+            else
+            {
+               listenerList.get(listenerList.size() - 1).setPattern(null);
+            }
             BufferedReader out = new BufferedReader(
                     new FileReader(logFile));
             while((str = out.readLine()) != null)
             {
-                listenerList.get(listenerList.size() - 1).write(str);
+                Listener k = listenerList.get(listenerList.size() - 1);
+                if(k.getPattern() == null || k.check(str))
+                    listenerList.get(listenerList.size() - 1).write(str);
             }
         }
         catch(Exception e)

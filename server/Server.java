@@ -8,8 +8,13 @@ import java.io.InputStreamReader;
 public class Server
 {
     private static LogWatch log;
+    public static String logName;
     public static void main(String[] args)
     {
+       if(args.length > 0)
+       {
+          logName = new String(args[0]);
+       }
         try
         {
             SSLServerSocketFactory servFactory = 
@@ -18,7 +23,7 @@ public class Server
                 (SSLServerSocket) servFactory.createServerSocket(8888);
             SSLSocket socket;
             log = new LogWatch();
-            System.err.println("Now entering the accept() loop");
+            System.err.println("The log daemon is now running");
             while(true)
             {
                 socket = (SSLSocket) servSocket.accept();
