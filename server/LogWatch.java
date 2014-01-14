@@ -12,12 +12,12 @@ public class LogWatch extends TailerListenerAdapter
 {
     private static File logFile;
     private static ArrayList<Listener> listenerList;
-    public LogWatch()
+    public LogWatch(String logName)
     {
         listenerList = new ArrayList<Listener>();
         try
         {
-            logFile = new File(Server.logName);
+            logFile = new File(logName);
             Tailer tailer = Tailer.create(logFile,this);
         }
         catch(Exception e)

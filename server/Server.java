@@ -11,18 +11,26 @@ public class Server
     public static String logName;
     public static void main(String[] args)
     {
+       /*
+        * store the apth to the log file
+        */
        if(args.length > 0)
        {
           logName = new String(args[0]);
        }
         try
         {
+            /* create an ssl server socket */
             SSLServerSocketFactory servFactory = 
                 (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
             SSLServerSocket servSocket = 
                 (SSLServerSocket) servFactory.createServerSocket(8888);
             SSLSocket socket;
-            log = new LogWatch();
+            /* 
+             * create a logging daemon that will keep reading
+             * changes in the specified logfile 
+             */
+            log = new LogWatch(logName);
             System.err.println("The log daemon is now running");
             while(true)
             {
