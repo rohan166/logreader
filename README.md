@@ -1,5 +1,6 @@
 An ssl encrypted server and client written in Java to let users read logs from a
 server without logging in.
+Written during the 2014 Intuit DevOps Hackathon.
 
 ## Instructions
 
